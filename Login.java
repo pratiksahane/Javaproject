@@ -49,6 +49,9 @@ public class Login {
         myobj.password1=sc.nextInt();
      if (myobj.validation(code)){
         System.out.println("Success full logged in");
+        Menupage myobj3=new Menupage();
+        myobj3.printMenu();
+
      }   
      else{
         System.out.println("Invalid credentials");
@@ -70,20 +73,12 @@ public class Login {
                 System.out.println("Invalid credentials");
             }
 
-
-
-
-
         }
     else{
         System.out.println("Invalid Choice");
         
     }
-
-       
-
-
-
-
+    sc.close();
     }
+    
 }
