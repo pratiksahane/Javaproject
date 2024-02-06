@@ -1,12 +1,22 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 class Usercred{
-    private String[] usernames = {"employee1", "employee2"};
-    private int[] password={1234,5678};
+    private ArrayList<String> usernames = new ArrayList<>();
+    private ArrayList<Integer> passwords = new ArrayList<>();
+    public Usercred() {
+        // Add elements to the ArrayLists
+        usernames.add("employee1");
+        usernames.add("employee2");
+
+        passwords.add(1234);
+        passwords.add(5678);
+    }
+
     String name;
     int password1;
     public boolean validation(int code){
-        int temp=password[code];
-        if (usernames[code].equals(name) && temp==(password1)){
+        int temp=passwords.get(code);
+        if (usernames.get(code).equals(name) && temp==(password1)){
 
             return true;
         }
