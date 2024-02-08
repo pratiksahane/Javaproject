@@ -3,15 +3,49 @@ import java.util.Scanner;
 class Usercred{
     private ArrayList<String> usernames = new ArrayList<>();
     private ArrayList<Integer> passwords = new ArrayList<>();
-    public Usercred() {
-        // Add elements to the ArrayLists
-        usernames.add("employee1");
-        usernames.add("employee2");
-
-        passwords.add(1234);
-        passwords.add(5678);
+    
+    private void initializeDefaultEmployees() {
+        // Add default employees if the list is empty
+        if (usernames.isEmpty()) {
+            usernames.add("employee1");
+            usernames.add("employee2");
+            passwords.add(1234);
+            passwords.add(5678);
+        }
     }
 
+    public Usercred() {
+        initializeDefaultEmployees();
+    }
+    public Usercred(String n, int n1) {
+        initializeDefaultEmployees();
+        usernames.add(n); // Add the username directly, not the index
+        passwords.add(n1); // Add the password directly, not the index
+        System.out.println("Employees are:");
+        for (String item : usernames) {
+            System.out.println(item);
+        }
+    }
+    
+    public Usercred(String n, int n1, int e) {
+        initializeDefaultEmployees();
+        int indexToRemove = usernames.indexOf(n);
+        if (indexToRemove != -1 && passwords.get(indexToRemove) == n1) {
+            usernames.remove(indexToRemove); // Remove the username at the found index
+            passwords.remove(indexToRemove); // Remove the corresponding password
+            System.out.println("Employee removed successfully");
+        } else {
+            System.out.println("Employee removed");
+        }
+    
+        // Print the updated list of employees after the removal attempt
+        System.out.println("Employees are:");
+        for (String item : usernames) {
+            System.out.println(item);
+        }
+    }
+    
+    
     String name;
     int password1;
     public boolean validation(int code){
@@ -78,6 +112,29 @@ public class Login {
             
             if (myobj1.validate(a,b)){
                 System.out.println("Success full logged in");
+                System.out.println("1:Add employee:");
+                System.out.println("2:Remove employee:");
+                System.out.println("What task you want to among this two:");
+                int task=sc.nextInt();
+                sc.nextLine();
+                if (task==1){
+                    System.out.println("Enter new employee username:");
+                    String namee=sc.nextLine();
+                    
+                    System.out.println("Enter new employee login password:");
+                    int id1=sc.nextInt();
+                    Usercred myobj5= new Usercred(namee,id1);
+                }
+                else{
+                    int i=0;
+                    System.out.println("Enter employee username to remove:");
+                    String nameee=sc.nextLine();
+                    
+                    System.out.println("Enter employee password to remove:");
+                    int id2=sc.nextInt();
+                    Usercred myobj6= new Usercred(nameee,id2,i);
+                }
+
             }
             else{
                 System.out.println("Invalid credentials");

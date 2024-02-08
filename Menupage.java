@@ -79,18 +79,18 @@ class Menupage {
         double tax = 5;
 
         System.out.println("***************************");
-        System.out.println("     Hotel " + hotelName);
+        System.out.println("     Restaurant    " + hotelName);
         System.out.println("***************************");
         System.out.println(" " + hotelAddress);
         System.out.println("***************************");
         System.out.println("Items Ordered:");
         System.out.println("Code: " + codeOrdered);
-        System.out.printf("%-10s %.2f %d\n", itemName, price, qty);
+        System.out.println("Name:"+itemName+"Price:  " +price+"Quantity:  "+ qty);
         System.out.println("----------------------------------");
 
         // Calculate and print total, GST, tax, and final amount
         double gstAmount = totalBill * gst / 100;
-        System.out.printf("%-5s %10.2f\n", "GST (18%)", gstAmount);
+        System.out.printf("%-10s %10.2f\n", "GST (18%)", gstAmount);
 
         double taxAmount = totalBill * tax / 100;
         System.out.printf("%-10s %10.2f\n", "Tax (5%)", taxAmount);
