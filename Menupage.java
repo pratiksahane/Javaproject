@@ -54,7 +54,7 @@ class Menupage {
                         String itemName = orderResultSet.getString("name");
                         double price = orderResultSet.getDouble("price");
                         System.out.println("Item ordered by customer is:");
-                        System.out.println("Code: " + codeOrdered + ", Name: " + itemName + ", Price: $" + price);
+                        System.out.println("Code: " + codeOrdered + "Name: " + itemName + "Price: $" + price);
                         System.out.println("Quantity ordered is: " + qty);
                         printBill(codeOrdered, itemName, qty, price);
                     } else {
@@ -85,7 +85,7 @@ class Menupage {
         System.out.println("***************************");
         System.out.println("Items Ordered:");
         System.out.println("Code: " + codeOrdered);
-        System.out.println("Name:"+itemName+"Price:  " +price+"Quantity:  "+ qty);
+        System.out.println("Name:"+itemName+"Price:" +price+"Quantity:"+ qty);
         System.out.println("----------------------------------");
 
         // Calculate and print total, GST, tax, and final amount
