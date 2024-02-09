@@ -82,7 +82,7 @@ public class Login {
         System.out.println("Enter employee if you are and enter manager if you are:");
         String s=sc.nextLine();
         Usercred myobj=new Usercred();
-        String c="No";
+        
         if (s.equals("employee")){
     
         System.out.println("Enter the employee code:(0,1)");
@@ -113,40 +113,53 @@ public class Login {
             
             if (myobj1.validate(a,b)){
                 System.out.println("Success full logged in");
-                while(c.equals("No")){
-                System.out.println("1:Add employee:");
-                System.out.println("2:Remove employee:");
-                System.out.println("3:Switch to employee side:");
-                System.out.println("What task you want to among this two:");
-                int task=sc.nextInt();
-                Menupage myobj7=new Menupage();
-                sc.nextLine();
-                if (task==1){
-                    System.out.println("Enter new employee username:");
-                    String namee=sc.nextLine();
-                    
-                    System.out.println("Enter new employee login password:");
-                    int id1=sc.nextInt();
-                    Usercred myobj5= new Usercred(namee,id1);
-                }
-                else if(task==2){
-                    int i=0;
-                    System.out.println("Enter employee username to remove:");
-                    String nameee=sc.nextLine();
-                    
-                    System.out.println("Enter employee password to remove:");
-                    int id2=sc.nextInt();
-                    sc.nextLine(); 
-                    Usercred myobj6= new Usercred(nameee,id2,i);
-                }
-                else{
-                    myobj7.printMenu();
+                String c = "No"; // Ensure proper initialization
+                Menupage myobj7 = new Menupage();
+                while (c.equals("No")) { // Loop until the user wants to quit
+                    System.out.println("1: Add employee");
+                    System.out.println("2: Remove employee");
+                    System.out.println("3: Switch to employee side");
+                    System.out.println("4: Check Totalsales:");
+                    System.out.println("What task do you want to perform?");
+                
+                    int task = sc.nextInt();
+                    sc.nextLine();  
+                
+                    switch(task) {
+                        case 1:
+                            System.out.println("Enter new employee username:");
+                            String namee = sc.nextLine();
+                                        
+                            System.out.println("Enter new employee login password:");
+                            int id1 = sc.nextInt();
+                            Usercred myobj5 = new Usercred(namee, id1);
+                            break;
+                            
+                        case 2:
+                            int i = 0;
+                            System.out.println("Enter employee username to remove:");
+                            String nameee = sc.nextLine();
+                                        
+                            System.out.println("Enter employee password to remove:");
+                            int id2 = sc.nextInt();
+                            sc.nextLine(); // Consume newline
+                            Usercred myobj6 = new Usercred(nameee, id2, i);
+                            break;
+                            
+                        case 3:
+                            myobj7.printMenu();
+                            break;
+
+                        case 4:
+                            myobj7.displayTotalsales();
+                            break;
+                    }
+                
+                    System.out.println("Do you want to quit? (Yes/No):");
+                    c = sc.nextLine();
+                    sc.nextLine();
                 }
                 
-                sc.nextLine();
-                System.out.println("Do you want to quit?(Yes/No):");
-                c=sc.nextLine();
-            }
 
             }
             else{

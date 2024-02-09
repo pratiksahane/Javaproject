@@ -3,12 +3,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 class Menupage {
     private static final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521/orcl";
     private static final String USERNAME = "scott";
     private static final String PASSWORD = "tiger";
+    private static double totalSales=0;
 
     public void printMenu() {
         try {
@@ -19,63 +21,75 @@ class Menupage {
             return;
         }
 
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM mainCourse")) {
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    System.out.println("Menu Present in Our Restaurant:");
-                    System.out.println("------------------------------");
-                    do {
-                        // Fetch and display menu item details
-                        String code = resultSet.getString("code");
-                        String itemName = resultSet.getString("name");
-                        double price = resultSet.getDouble("price");
-                        System.out.println("Code: " + code + ", Name: " + itemName + ", Price: $" + price);
-                    } while (resultSet.next());
-                } else {
-                    System.out.println("No items found in the menu.");
-                }
-            }
-
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter the code of the food ordered:");
-            String codeOrdered = scanner.nextLine();
-            scanner.nextLine();
-            System.out.println("Enter the quantity required:");
-            int qty = scanner.nextInt();
-            scanner.nextLine();
-            scanner.close();
-
-            // Query the details of the food item ordered by the customer
-            try (PreparedStatement orderStatement = connection.prepareStatement("SELECT * FROM mainCourse WHERE code = ?")) {
-                orderStatement.setString(1, codeOrdered);
-                try (ResultSet orderResultSet = orderStatement.executeQuery()) {
-                    if (orderResultSet.next()) {
-                        // Display the details of the ordered food item
-                        String itemName = orderResultSet.getString("name");
-                        double price = orderResultSet.getDouble("price");
-                        System.out.println("Item ordered by customer is:");
-                        System.out.println("Code: " + codeOrdered + ", Name: " + itemName + "Price: $" + price);
-                        System.out.println("Quantity ordered is: " + qty);
-                        printBill(codeOrdered, itemName, qty, price);
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM mainCourse")) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        System.out.println("Menu Present in Our Restaurant:");
+                        System.out.println("------------------------------");
+                        do {
+                            // Fetch and display menu item details
+                            String code = resultSet.getString("code");
+                            String itemName = resultSet.getString("name");
+                            double price = resultSet.getDouble("price");
+                            System.out.println("Code: " + code + ", Name: " + itemName + ", Price: $" + price);
+                        } while (resultSet.next());
                     } else {
-                        System.out.println("No item found with code: " + codeOrdered);
+                        System.out.println("No items found in the menu.");
                     }
                 }
             }
 
+            Scanner scanner = new Scanner(System.in);
+            ArrayList<String> orderedCodes = new ArrayList<>();
+            ArrayList<String> namelist = new ArrayList<>();
+            ArrayList<Double> pricelist = new ArrayList<>();
+            boolean addMore = true;
+            double totalBill = 0;
+            while (addMore) {
+                System.out.println("Enter the code of the food ordered:");
+                String codeOrdered = scanner.nextLine();
+                orderedCodes.add(codeOrdered);
+                System.out.println("Enter the quantity required:");
+                int qty = scanner.nextInt();
+                scanner.nextLine();
+                try (PreparedStatement orderStatement = connection.prepareStatement("SELECT * FROM mainCourse WHERE code = ?")) {
+                    orderStatement.setString(1, codeOrdered);
+                    try (ResultSet orderResultSet = orderStatement.executeQuery()) {
+                        if (orderResultSet.next()) {
+                            // Display the details of the ordered food item
+                            String itemName = orderResultSet.getString("name");
+                            namelist.add(itemName);
+                            double price = orderResultSet.getDouble("price");
+                            pricelist.add(price);
+                            System.out.println("Item ordered by customer is:");
+                            System.out.println("Code: " + codeOrdered + ", Name: " + itemName + ", Price: $" + price);
+                            // Assuming qty is defined somewhere in your code
+                            System.out.println("Quantity ordered is: " + qty);
+                            totalBill += price * qty;
+                        } else {
+                            System.out.println("No item found with code: " + codeOrdered);
+                        }
+                    }
+                }
+
+                System.out.println("Do you want to add more food codes? (yes/no)");
+                String response = scanner.nextLine();
+                if (!response.equalsIgnoreCase("yes")) {
+                    addMore = false;
+                }
+            }
+
+            printBill(totalBill,orderedCodes,namelist,pricelist);
         } catch (SQLException e) {
-            System.err.println("SQL Exception occurred");
             e.printStackTrace();
         }
     }
+    
 
-    public void printBill(String codeOrdered, String itemName, int qty, double price) {
+    public void printBill(double totalBill, ArrayList<String> orderedCodes, ArrayList<String> nameList, ArrayList<Double> priceList) {
         String hotelName = "Orchid";
         String hotelAddress = "123 Main Street, City";
-
-        double totalBill = qty * price;
 
         double gst = 18;
         double tax = 5;
@@ -86,11 +100,15 @@ class Menupage {
         System.out.println(" " + hotelAddress);
         System.out.println("***************************");
         System.out.println("Items Ordered:");
-        System.out.println("Code: " + codeOrdered);
-        System.out.println("Name: "+itemName);
-        System.out.println("Price: " +price+" Quantity: "+ qty);
         System.out.println("----------------------------------");
-
+        for (int i = 0; i < orderedCodes.size(); i++) {
+            String code = orderedCodes.get(i);
+            String name = nameList.get(i);
+            Double price = priceList.get(i);
+            
+            System.out.println("Code: " + code + ", Name: " + name + ", Price: " + price);
+        }
+        
         // Calculate and print total, GST, tax, and final amount
         double gstAmount = totalBill * gst / 100;
         System.out.printf("%-10s %10.2f\n", "GST (18%)", gstAmount);
@@ -101,7 +119,14 @@ class Menupage {
         double finalAmount = totalBill + gstAmount + taxAmount;
         System.out.println("----------------------------------");
         System.out.printf("%-5s %7.2f\n", "Total", finalAmount);
+        addTototalsales(finalAmount);
         System.out.println("***************************");
         System.out.println("Thank you for your visit!");
+    }
+    public void addTototalsales(double finalAmount){
+        totalSales=totalSales+finalAmount;
+    }
+    public void displayTotalsales() {
+        System.out.println("The Total sales is: " + totalSales);
     }
 }
