@@ -82,6 +82,7 @@ public class Login {
         System.out.println("Enter employee if you are and enter manager if you are:");
         String s=sc.nextLine();
         Usercred myobj=new Usercred();
+        Menupage myobj7 = new Menupage();
         
         if (s.equals("employee")){
     
@@ -94,10 +95,9 @@ public class Login {
         myobj.password1=sc.nextInt();
      if (myobj.validation(code)){
         System.out.println("Success full logged in");
-        Menupage myobj3=new Menupage();
-        myobj3.printMenu();
+        myobj7.printMenu();
 
-     }   
+     }  
      else{
         System.out.println("Invalid credentials");
     }
@@ -113,9 +113,8 @@ public class Login {
             
             if (myobj1.validate(a,b)){
                 System.out.println("Success full logged in");
-                String c = "No"; // Ensure proper initialization
-                Menupage myobj7 = new Menupage();
-                while (c.equals("No")) { // Loop until the user wants to quit
+                int c = 1; // Ensure proper initialization
+                while (c==1) { // Loop until the user wants to quit
                     System.out.println("1: Add employee");
                     System.out.println("2: Remove employee");
                     System.out.println("3: Switch to employee side");
@@ -155,8 +154,8 @@ public class Login {
                             break;
                     }
                 
-                    System.out.println("Do you want to quit? (Yes/No):");
-                    c = sc.nextLine();
+                    System.out.println("Do you want to quit? (1(no)/0(yes)):");
+                    c = sc.nextInt();
                     sc.nextLine();
                 }
                 
