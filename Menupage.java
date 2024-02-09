@@ -40,47 +40,48 @@ class Menupage {
                 }
             }
 
-            Scanner scanner = new Scanner(System.in);
-            ArrayList<String> orderedCodes = new ArrayList<>();
-            ArrayList<String> namelist = new ArrayList<>();
-            ArrayList<Double> pricelist = new ArrayList<>();
-            boolean addMore = true;
-            double totalBill = 0;
-            while (addMore) {
-                System.out.println("Enter the code of the food ordered:");
-                String codeOrdered = scanner.nextLine();
-                orderedCodes.add(codeOrdered);
-                System.out.println("Enter the quantity required:");
-                int qty = scanner.nextInt();
-                scanner.nextLine();
-                try (PreparedStatement orderStatement = connection.prepareStatement("SELECT * FROM mainCourse WHERE code = ?")) {
-                    orderStatement.setString(1, codeOrdered);
-                    try (ResultSet orderResultSet = orderStatement.executeQuery()) {
-                        if (orderResultSet.next()) {
-                            // Display the details of the ordered food item
-                            String itemName = orderResultSet.getString("name");
-                            namelist.add(itemName);
-                            double price = orderResultSet.getDouble("price");
-                            pricelist.add(price);
-                            System.out.println("Item ordered by customer is:");
-                            System.out.println("Code: " + codeOrdered + ", Name: " + itemName + ", Price: $" + price);
-                            // Assuming qty is defined somewhere in your code
-                            System.out.println("Quantity ordered is: " + qty);
-                            totalBill += price * qty;
-                        } else {
-                            System.out.println("No item found with code: " + codeOrdered);
+            try (Scanner scanner = new Scanner(System.in)) {
+                ArrayList<String> orderedCodes = new ArrayList<>();
+                ArrayList<String> namelist = new ArrayList<>();
+                ArrayList<Double> pricelist = new ArrayList<>();
+                boolean addMore = true;
+                double totalBill = 0;
+                while (addMore) {
+                    System.out.println("Enter the code of the food ordered:");
+                    String codeOrdered = scanner.nextLine();
+                    orderedCodes.add(codeOrdered);
+                    System.out.println("Enter the quantity required:");
+                    int qty = scanner.nextInt();
+                    scanner.nextLine();
+                    try (PreparedStatement orderStatement = connection.prepareStatement("SELECT * FROM mainCourse WHERE code = ?")) {
+                        orderStatement.setString(1, codeOrdered);
+                        try (ResultSet orderResultSet = orderStatement.executeQuery()) {
+                            if (orderResultSet.next()) {
+                                // Display the details of the ordered food item
+                                String itemName = orderResultSet.getString("name");
+                                namelist.add(itemName);
+                                double price = orderResultSet.getDouble("price");
+                                pricelist.add(price);
+                                System.out.println("Item ordered by customer is:");
+                                System.out.println("Code: " + codeOrdered + ", Name: " + itemName + ", Price: $" + price);
+                                // Assuming qty is defined somewhere in your code
+                                System.out.println("Quantity ordered is: " + qty);
+                                totalBill += price * qty;
+                            } else {
+                                System.out.println("No item found with code: " + codeOrdered);
+                            }
                         }
+                    }
+
+                    System.out.println("Do you want to add more food codes? (yes/no)");
+                    String response = scanner.nextLine();
+                    if (!response.equalsIgnoreCase("yes")) {
+                        addMore = false;
                     }
                 }
 
-                System.out.println("Do you want to add more food codes? (yes/no)");
-                String response = scanner.nextLine();
-                if (!response.equalsIgnoreCase("yes")) {
-                    addMore = false;
-                }
+                printBill(totalBill,orderedCodes,namelist,pricelist);
             }
-
-            printBill(totalBill,orderedCodes,namelist,pricelist);
         } catch (SQLException e) {
             e.printStackTrace();
         }
