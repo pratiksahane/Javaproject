@@ -41,8 +41,10 @@ class Menupage {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter the code of the food ordered:");
             String codeOrdered = scanner.nextLine();
+            scanner.nextLine();
             System.out.println("Enter the quantity required:");
             int qty = scanner.nextInt();
+            scanner.nextLine();
             scanner.close();
 
             // Query the details of the food item ordered by the customer
