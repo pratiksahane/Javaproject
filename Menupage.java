@@ -10,7 +10,7 @@ class Menupage {
     private static final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521/orcl";
     private static final String USERNAME = "scott";
     private static final String PASSWORD = "tiger";
-    private static double totalSales=0;
+    public static double totalSales = 0;
 
     public void printMenu() {
         try {
@@ -120,14 +120,20 @@ class Menupage {
         double finalAmount = totalBill + gstAmount + taxAmount;
         System.out.println("----------------------------------");
         System.out.printf("%-5s %7.2f\n", "Total", finalAmount);
-        addTototalsales(finalAmount);
+        Menupage.addTotalSales(finalAmount);
         System.out.println("***************************");
         System.out.println("Thank you for your visit!");
     }
-    public void addTototalsales(double finalAmount){
-        totalSales=totalSales+finalAmount;
+    
+    public static void addTotalSales(double finalAmount){
+        totalSales += finalAmount;
     }
-    public void displayTotalsales() {
-        System.out.println("The Total sales is: " + totalSales);
+    
+    public static double getTotalSales(){
+        return totalSales; 
     }
+    public static void setTotalSales(double newTotalSales) {
+        totalSales = newTotalSales;
+    }
+    
 }
