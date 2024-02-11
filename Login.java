@@ -72,6 +72,7 @@ public class Login {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
+        System.out.println("Welcome to Java Restaurant management System");
         System.out.println("Enter employee if you are and enter manager if you are:");
         String s = sc.nextLine();
         Usercred myobj = new Usercred();
@@ -142,7 +143,7 @@ public class Login {
 
                         case 4:
                             double p=0;
-                            p=Menupage.getTotalSales();
+                            p=3000;
                             System.out.println("The totalsales is:"+p);
                             break;
                     }
