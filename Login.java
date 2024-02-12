@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.io.*; 
+
 
 class Usercred {
     private ArrayList<String> usernames = new ArrayList<>();
@@ -140,22 +142,35 @@ public class Login {
                             break;
 
                         case 4:
-                            double p=0;
-                            p=34560;
-                            System.out.println("The totalsales is:"+p);
-                            break;
+                        File file = new File("total_sales.txt");
+                        try (Reader reader = new FileReader(file);
+                             BufferedReader bufferedReader = new BufferedReader(reader)) {
+                            String line = bufferedReader.readLine();
+                            if (line != null) {
+                                System.out.println("The total sales are: " + line);
+                            } else {
+                                System.out.println("No total sales found in file.");
+                            }
+                        } catch (FileNotFoundException e) {
+                            System.err.println("Error: File not found - " + e.getMessage());
+                        } catch (IOException e) {
+                            System.err.println("Error reading from file - " + e.getMessage());
+                        }
+                        break;
+                    
+                        
                     }
 
                     do {
                         System.out.println("Do you want to quit? (1(no)/0(yes)):");
-                        try {
+                       try {
                             quitChoice = sc.nextInt();
                             sc.nextLine(); // Consume newline
-                            if (quitChoice != 0 && quitChoice != 1) {
-                                System.out.println("Invalid input. Please enter 0 (yes) or 1 (no).");
-                            }
+                           if (quitChoice != 0 && quitChoice != 1) {
+                              System.out.println("Invalid input. Please enter 0 (yes) or 1 (no).");
+                           }
                         } catch (NoSuchElementException e) {
-                            System.err.println("Error reading input: " + e.getMessage());
+                           System.err.println("Error reading input: " + e.getMessage());
                             quitChoice = 0; // Quit to avoid infinite loop
                         }
                     } while (quitChoice != 0 && quitChoice != 1);
@@ -168,8 +183,9 @@ public class Login {
             }
 
         } else {
-            System.out.println("Invalid Choice");
+           System.out.println("Invalid Choice");
         }
         sc.close();
     }
 }
+

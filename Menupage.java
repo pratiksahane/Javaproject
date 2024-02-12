@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.*; 
 
 class Menupage {
     private static final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521/orcl";
@@ -128,13 +129,19 @@ class Menupage {
     
     public static void addTotalSales(double finalAmount){
         totalSales += finalAmount;
+        storeTotalSales();
+    }
+    public static  void storeTotalSales(){
+        File file = new File("total_sales.txt");
+        try (PrintWriter writer = new PrintWriter(file)) {
+            writer.println(totalSales);
+            System.out.println("Total sales stored in file: " + totalSales);
+        } catch (FileNotFoundException e) {
+            System.err.println("Error: File not found - " + e.getMessage());
+        }
+    } 
+
     }
     
-    public static double getTotalSales(){
-        return totalSales; 
-    }
-    public static void setTotalSales(double newTotalSales) {
-        totalSales = newTotalSales;
-    }
     
-}
+
