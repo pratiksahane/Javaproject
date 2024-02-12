@@ -67,8 +67,6 @@ class Manager {
 }
 
 public class Login {
-
-    @SuppressWarnings("static-access")
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
@@ -143,7 +141,7 @@ public class Login {
 
                         case 4:
                             double p=0;
-                            p=3000;
+                            p=34560;
                             System.out.println("The totalsales is:"+p);
                             break;
                     }

@@ -108,8 +108,9 @@ class Menupage {
             Double price = priceList.get(i);
             
             System.out.println("Code: " + code + ", Name: " + name + ", Price: " + price);
+            System.out.println("\n");
         }
-        
+        System.out.println("----------------------------------");
         // Calculate and print total, GST, tax, and final amount
         double gstAmount = totalBill * gst / 100;
         System.out.printf("%-10s %10.2f\n", "GST (18%)", gstAmount);
