@@ -9,7 +9,7 @@ class Usercred {
     private ArrayList<Integer> passwords = new ArrayList<>();
 
     private void initializeDefaultEmployees() {
-        // Add default employees if the list is empty
+        // Adding default employees
         if (usernames.isEmpty()) {
             usernames.add("employee1");
             usernames.add("employee2");
@@ -24,8 +24,8 @@ class Usercred {
 
     public Usercred(String n, int n1) {
         initializeDefaultEmployees();
-        usernames.add(n); // Add the username directly, not the index
-        passwords.add(n1); // Add the password directly, not the index
+        usernames.add(n); 
+        passwords.add(n1);
         System.out.println("Employees are:");
         for (String item : usernames) {
             System.out.println(item);
@@ -36,20 +36,17 @@ class Usercred {
         initializeDefaultEmployees();
         int indexToRemove = usernames.indexOf(n);
         if (indexToRemove != -1 && passwords.get(indexToRemove) == n1) {
-            usernames.remove(indexToRemove); // Remove the username at the found index
-            passwords.remove(indexToRemove); // Remove the corresponding password
+            usernames.remove(indexToRemove); 
+            passwords.remove(indexToRemove); 
             System.out.println("Employee removed successfully");
         } else {
             System.out.println("Employee removed");
         }
-
-        // Print the updated list of employees after the removal attempt
         System.out.println("Employees are:");
         for (String item : usernames) {
             System.out.println(item);
         }
     }
-
     String name;
     int password1;
 
