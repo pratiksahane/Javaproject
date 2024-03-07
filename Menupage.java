@@ -131,11 +131,23 @@ class Menupage {
             totalSales += finalAmount;
             storeTotalSales();
         }
+       
         public static  void storeTotalSales(){
             File file = new File("total_sales.txt");
-            try (PrintWriter writer = new PrintWriter(file)) {
-                writer.println(totalSales);
-                System.out.println("Total sales stored in file: " + totalSales);
+            try {
+                Scanner files = new Scanner(file);
+                String tsales = files.nextLine();
+                double previousTotalSales = Double.parseDouble(tsales);
+                double newTotalSales = previousTotalSales + totalSales;
+    
+                // Write the updated total sales back to the file
+                try (PrintWriter writer = new PrintWriter(file)) {
+                    writer.println(newTotalSales);
+                    System.out.println("Total sales stored in file: " + newTotalSales);
+                } catch (FileNotFoundException e) {
+                    System.err.println("Error: File not found - " + e.getMessage());
+                }
+                files.close(); // Close the scanner
             } catch (FileNotFoundException e) {
                 System.err.println("Error: File not found - " + e.getMessage());
             }
