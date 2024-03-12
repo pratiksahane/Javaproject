@@ -52,7 +52,8 @@ class Usercred {
 
     public boolean validation(int code) {
         int temp = passwords.get(code);
-        return usernames.get(code).equals(name) && temp == (password1);
+        String storedname= usernames.get(code);
+        return storedname.equalsIgnoreCase(name) && temp == (password1);
     }
 }
 
@@ -61,7 +62,7 @@ class Manager {
     public String user = "employee3";
 
     public boolean validate(String a, int b) {
-        return a.equals(user) && b == managpass;
+        return a.equalsIgnoreCase(user) && b == managpass;
     }
 }
 
@@ -75,7 +76,7 @@ public class Login {
         Usercred myobj = new Usercred();
         Menupage myobj7 = new Menupage();
 
-        if (s.equals("employee")) {
+        if (s.equalsIgnoreCase("employee")) {
 
             System.out.println("Enter the employee code:(0,1)");
             int code = sc.nextInt();
@@ -92,7 +93,7 @@ public class Login {
             } else {
                 System.out.println("Invalid credentials");
             }
-        } else if (s.equals("manager")) {
+        } else if (s.equalsIgnoreCase("manager")) {
             Manager myobj1 = new Manager();
             System.out.println("Enter username for manager:");
             String a = sc.nextLine();
