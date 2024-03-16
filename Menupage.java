@@ -50,12 +50,12 @@ class Menupage {
                 while (addMore) {
                     System.out.println("Enter the code of the food ordered:");
                     String codeOrdered = scanner.nextLine();
-                    orderedCodes.add(codeOrdered);
+                    orderedCodes.add(codeOrdered.toUpperCase());
                     System.out.println("Enter the quantity required:");
                     int qty = scanner.nextInt();
                     scanner.nextLine();
                     try (PreparedStatement orderStatement = connection.prepareStatement("SELECT * FROM mainCourse WHERE code = ?")) {
-                        orderStatement.setString(1, codeOrdered);
+                        orderStatement.setString(1, codeOrdered.toUpperCase());
                         try (ResultSet orderResultSet = orderStatement.executeQuery()) {
                             if (orderResultSet.next()) {
                                 // Display the details of the ordered food item
@@ -64,12 +64,12 @@ class Menupage {
                                 double price = orderResultSet.getDouble("price");
                                 pricelist.add(price);
                                 System.out.println("Item ordered by customer is:");
-                                System.out.println("Code: " + codeOrdered + ", Name: " + itemName + ", Price: $" + price);
+                                System.out.println("Code: " + codeOrdered.toUpperCase() + ", Name: " + itemName + ", Price: $" + price);
                                 // Assuming qty is defined somewhere in your code
                                 System.out.println("Quantity ordered is: " + qty);
                                 totalBill += price * qty;
                             } else {
-                                System.out.println("No item found with code: " + codeOrdered);
+                                System.out.println("No item found with code: " + codeOrdered.toUpperCase());
                             }
                         }
                     }
